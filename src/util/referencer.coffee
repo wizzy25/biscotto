@@ -236,7 +236,7 @@ module.exports = class Referencer
         data.doc.deprecated = @resolveTextReferences(data.doc.deprecated, entity, path)
 
       if data.doc.comment
-        data.doc.comment = @resolveTextReferences(data.doc.comment, entity, path)
+        data.doc.comment = @resolveTextReferences(data.doc.summary, entity, path)
 
       for returnValue in data.doc.returnValue ? []
         returnValue.desc = @resolveTextReferences(returnValue.desc, entity, path)
