@@ -159,7 +159,8 @@ module.exports = class Doc extends Node
     examples.push(section) unless _.isEmpty(section)
     while _.first(sections)
       lines = sections.shift().split("\n")
-      examples.push(@deindent(lines).join("\n"))
+      linesWithoutIndent = @deindent(lines).join("\n")
+      examples.push(linesWithoutIndent) if linesWithoutIndent
 
     examples
 
