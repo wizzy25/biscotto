@@ -125,8 +125,11 @@ module.exports = class Doc extends Node
 
       current = sections.shift()
 
-    sentence = /((?:.|\n)*?[.#][\s$])/.exec(text)
-    sentence = sentence[1].replace(/\s*#\s*$/, '') if sentence
+    # sentence = /((?:.|\n)*?[.#][\s$])/.exec(text)
+    # sentence = sentence[1].replace(/\s*#\s*$/, '') if sentence
+    # @summary = Markdown.convert(_.str.clean(sentence || text), true)
+    # NOTE: custom version of sentence
+    sentence = text.replace(/\s*#\s*$/, '') if sentence
     @summary = Markdown.convert(_.str.clean(sentence || text), true)
 
   # Public: Parse the member description.
