@@ -116,6 +116,10 @@ module.exports = class Doc extends Node
         @returnValue or= []
 
         @returnValue = @parse_returns(current)
+      else if /^\s*Throws/.test(current)
+        @throwValue or= []
+
+        @throwValue = @parse_throws(current)
       else
         text = text.concat "\n\n#{current}"
 
@@ -180,6 +184,7 @@ module.exports = class Doc extends Node
 
       if /^Returns/.test(line)
         in_hash = false
+        line = line.replace /^Returns/, ""
         returns.push(
           type: Referencer.getLinkMatch(line)
           desc: Markdown.convert(line).replace /<\/?p>/g, ""
@@ -198,6 +203,41 @@ module.exports = class Doc extends Node
           _.last(returns).desc += "\n#{line}"
 
     returns
+
+  # Public: Parse the member's throw values.
+  #
+  # section - The section {String} starting with "Throws"
+  #
+  # Returns nothing.
+  parse_throws: (section) ->
+    throws = []
+    current = []
+    in_hash = false
+
+    lines = section.split("\n")
+    _.each lines, (line) ->
+      line = _.str.trim(line)
+
+      if /^Throws/.test(line)
+        in_hash = false
+        throws.push(
+          type: Referencer.getLinkMatch(line)
+          desc: Markdown.convert(line).replace /<\/?p>/g, ""
+        )
+        current = throws
+      else if _.last(throws) and hash_match = line.match(/^:(\w+)\s*-\s*(.*)/)
+        in_hash = true
+        _.last(throws).options ?= []
+        name = hash_match[1]
+        desc = hash_match[2]
+        _.last(throws).options.push({name, desc, type: Referencer.getLinkMatch(line)})
+      else if /^\S+/.test(line)
+        if in_hash
+          _.last(_.last(throws).options).desc += " #{line}"
+        else
+          _.last(throws).desc += "\n#{line}"
+
+    throws
 
   # Public: Parse the member's arguments. Arguments occur subsequent to
   # the description.
