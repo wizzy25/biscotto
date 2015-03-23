@@ -129,8 +129,8 @@ module.exports = class Doc extends Node
     # sentence = sentence[1].replace(/\s*#\s*$/, '') if sentence
     # @summary = Markdown.convert(_.str.clean(sentence || text), true)
     # NOTE: custom version of sentence
-    sentence = text.replace(/\s*#\s*$/, '') if sentence
-    @summary = Markdown.convert(_.str.clean(sentence || text), true)
+    sentence = text.replace(/\s*#\s*$/, '')
+    @summary = Markdown.convert(sentence, false)
 
   # Public: Parse the member description.
   #
