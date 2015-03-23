@@ -182,8 +182,13 @@ module.exports = class Biscotto
 
         else if argv.s
           port = if argv.s is true then 8080 else argv.s
-          connect = require 'connect'
-          connect.createServer(connect.static(argv.o)).listen port
+          serveStatic = require 'serve-static'
+          finalhandler = require 'finalhandler'
+          serve = serveStatic(argv.o)
+          server = require('http').createServer (req, res) ->
+            done = finalhandler(req, res)
+            serve(req, res, done)
+          server.listen port
           console.log 'Biscotto documentation from %s is available at http://localhost:%d', argv.o, port
 
         else
