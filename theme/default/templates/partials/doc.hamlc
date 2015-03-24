@@ -4,6 +4,10 @@
 - if show_description
   .docstring
 
+    - if @doc?.unsupported || @doc?.unsupported is ''
+      .note.unsupported
+        %strong Unsupported.
+
     - if @doc?.deprecated || @doc?.deprecated is ''
       .note.deprecated
         %strong Deprecated.

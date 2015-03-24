@@ -61,6 +61,12 @@ module.exports = class Doc extends Node
   isAbstract: ->
     /abstract/i.test(@status)
 
+  # Public: Is this doc unsupported?
+  #
+  # Returns a {Boolean}.
+  isUnsupported: ->
+    /unsupported/i.test(@status)
+
   # Public: Detect whitespace on the left and removes
   # the minimum whitespace amount.
   #
@@ -333,6 +339,7 @@ module.exports = class Doc extends Node
         private: @isPrivate()
         internal: @isInternal()
         deprecated: @isDeprecated()
+        unsupported: @isUnsupported()
         version: @version
         since: @since
         examples: @examples
